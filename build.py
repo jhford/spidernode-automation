@@ -2,10 +2,14 @@
 
 from subprocess import Popen
 import os
+import posixpath, ntpath
 import sys
 import time
 
 class CommandTimeoutExceeded(Exception):
+    pass
+
+class CommandNotFoundException(Exception):
     pass
 
 def run_cmd(args, workdir='.', env={}, timeout=30):
@@ -49,6 +53,29 @@ def make(workdir='.', target=None, makefile=None, keep_going=False,
         args.extend(['-C', directory])
     return run_cmd(args=args, workdir=workdir, **kwargs)
 
+def find_cmd(names, nt=False):
+    """Search for programs in 'names' and return the first match
+    as a string.  This function prioritizes order in names arg"""
+    if nt:
+        pathmod = ntpath
+    else:
+        pathmod = posixpath
+    path = os.environ['PATH']
+    path_dirs = path.split(';' if nt else ':')
+    for name in names:
+        for path_dir in path_dirs:
+            potential = pathmod.join(path_dir, name)
+            if pathmod.isfile(potential) and os.access(potential, os.X_OK):
+                return potential
+    raise CommandNotFoundException(
+        'no command in %s with path %s was found' % \
+        (names, path_dirs)
+    )
+
+print find_cmd(['bash', 'sh'])
+print find_cmd(['make', 'gmake'])
+print find_cmd(['python2.7', 'python2.6', 'python2.5', 'python2', 'python'])
+print find_cmd(['autoconf-2.13', 'autoconf213'])
 
 
 
