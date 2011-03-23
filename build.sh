@@ -36,9 +36,12 @@ info Starting v8monkey build
 PLATFORM=$1
 STYLE=$2
 
-OBJDIR=$(python -c 'import os.path ; print os.path.abspath(".")')/objdir
+#OBJDIR=$(python -c 'import os.path ; print os.path.abspath(".")')/objdir
+#PROBJDIR="$OBJDIR-nspr"
+#PREFIX=$(python -c 'import os.path ; print os.path.abspath(".")')/usr
+OBJDIR=$PWD/objdir
 PROBJDIR="$OBJDIR-nspr"
-PREFIX=$(python -c 'import os.path ; print os.path.abspath(".")')/usr
+PREFIX=$PWD/usr
 
 for i in autoconf-2.13 autoconf213 ; do
     if $i --version &> /dev/null ; then
@@ -66,7 +69,15 @@ if [[ "x" == "x$STYLE" ]] ; then
     fatal You must specify a build type
 fi
 
-conf_args="--prefix=$PREFIX"
+conf_args="--prefix=$PREFIX --enable-tests"
+
+case $STYLE in
+    "opt" )
+        conf_args="$conf_args --enable-optimize --disable-debug"
+        ;;
+    "debug" )
+        conf_args="$conf_args --disable-optimize --enable-debug"
+esac
 
 info Doing a $PLATFORM-$STYLE build
 test -d build/js/src || fatal missing source
