@@ -36,9 +36,6 @@ info Starting v8monkey build
 PLATFORM=$1
 STYLE=$2
 
-#OBJDIR=$(python -c 'import os.path ; print os.path.abspath(".")')/objdir
-#PROBJDIR="$OBJDIR-nspr"
-#PREFIX=$(python -c 'import os.path ; print os.path.abspath(".")')/usr
 OBJDIR=$PWD/objdir
 PROBJDIR="$OBJDIR-nspr"
 PREFIX=$PWD/usr
