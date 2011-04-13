@@ -76,6 +76,12 @@ case $STYLE in
         conf_args="$conf_args --disable-optimize --enable-debug"
 esac
 
+case $PLATFORM in
+    "x86_64-win32" )
+        conf_args="$conf_args --target=x86_64-pc-mingw32"
+        ;;
+esac
+
 info Doing a $PLATFORM-$STYLE build
 test -d build/js/src || fatal missing source
 test -d build/nsprpub || fatal missing source
