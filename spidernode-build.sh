@@ -127,13 +127,15 @@ echo Spidernode, spidernode
 echo Does whatever a spidernode does
 
 run_cmd rm -rf build/build
-run_cmd ./build/configure \
+pushd build > /dev/null
+run_cmd ./configure \
             --prefix $PREFIX \
             --shared-v8 \
             --shared-v8-libname=mozjs \
             --shared-v8-includes=$PREFIX/include/js \
             --shared-v8-libpath=$PREFIX/lib
 run_cmd make
+popd > /dev/null
 
 
 
