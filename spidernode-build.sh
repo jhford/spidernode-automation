@@ -79,7 +79,7 @@ esac
 
 info Doing a $PLATFORM-$STYLE build
 if [ ! -d v8monkey/.git ] ; then
-    run_cmd git clone ssh://github.com/zpao/v8monkey $SRCDIR
+    run_cmd git clone git://github.com/zpao/v8monkey $SRCDIR
 else
     (cd $SRCDIR && run_cmd git pull)
 fi
