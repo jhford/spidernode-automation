@@ -23,6 +23,6 @@ reconfig:
 
 log:
 	if [ -e twistd.log ]; \
-	then tail -f twistd.log; \
+	then tail -F twistd.log; \
 	else echo "Nothing to tail."; \
 	fi
